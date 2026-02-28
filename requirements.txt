@@ -1,0 +1,18 @@
+# ── Web Framework ─────────────────────────────
+flask==3.0.3
+flask-cors==4.0.1
+
+# ── HTTP Client (server.py → NewsAPI calls) ───
+requests==2.32.3
+
+# ── Environment Variable Loader ───────────────
+python-dotenv==1.0.1
+
+# ── Recommendations Microservice ──────────────
+# sentence-transformers: converts article text → embedding vectors
+# chromadb: vector store for similarity search
+sentence-transformers==2.7.0
+chromadb==0.4.24
+
+# ── Type Stubs (silences VS Code Mypy warnings) ──
+types-requests>=2.32.0,<2.33.0
