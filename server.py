@@ -4,10 +4,17 @@ Proxies both NewsAPI and Gemini API requests
 so API keys never reach the browser.
 """
 
+"""
+NewsLens — Flask Backend Proxy Server
+Proxies both NewsAPI and Gemini API requests
+so API keys never reach the browser.
+"""
+
 import os
 import requests
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from flask_caching import Cache
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -15,12 +22,13 @@ load_dotenv()
 app = Flask(__name__, static_folder='.', static_url_path='')
 CORS(app)
 
+# ── Configure Cache ───────────────────────────
+cache = Cache(app, config={'CACHE_TYPE': 'SimpleCache', 'CACHE_DEFAULT_TIMEOUT': 900})
+
 NEWS_API_KEY = os.getenv('NEWS_API_KEY')
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 
 NEWS_API_URL    = 'https://newsapi.org/v2/everything'
-
-# Updated to a newer model version to fix the 404 NotFound error
 GEMINI_API_URL  = (
     'https://generativelanguage.googleapis.com/v1beta/models/'
     'gemini-2.5-flash:generateContent'
@@ -36,11 +44,13 @@ def index():
 
 # ── News proxy ────────────────────────────────
 @app.route('/api/news')
+@cache.cached(timeout=900, query_string=True)
 def get_news():
     """
     Proxy route for NewsAPI.
     Frontend calls /api/news → Flask calls NewsAPI
     with real key from .env → returns articles JSON.
+    Cached for 15 minutes based on the query string.
     """
     topic     = request.args.get('q', 'technology')
     page_size = request.args.get('pageSize', 12)
