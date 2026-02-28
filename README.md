@@ -34,6 +34,7 @@
 ---
 
 ## 📁 Project Structure
+```bash
 NewsLens-AI-News-Aggregator---Personalized-Digest-App/
 ├── index.html # Semantic HTML5 structure
 ├── style.css # Responsive CSS3 — mobile-first
@@ -45,7 +46,7 @@ NewsLens-AI-News-Aggregator---Personalized-Digest-App/
 ├── .gitignore # Ignore rules
 ├── LICENSE # MIT License
 └── README.md # Documentation
-
+```
 
 ---
 
