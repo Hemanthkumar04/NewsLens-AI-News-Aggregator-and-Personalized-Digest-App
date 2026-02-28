@@ -4,12 +4,6 @@ Proxies both NewsAPI and Gemini API requests
 so API keys never reach the browser.
 """
 
-"""
-NewsLens — Flask Backend Proxy Server
-Proxies both NewsAPI and Gemini API requests
-so API keys never reach the browser.
-"""
-
 import os
 import requests
 from flask import Flask, jsonify, request
