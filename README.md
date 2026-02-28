@@ -12,12 +12,12 @@
 
 ## 🚀 Features
 
-- 🔍 **Live News Feed** — fetches real-time articles via NewsAPI REST endpoint with JSON parsing
-- 🎨 **Responsive UI** — mobile-first CSS Grid/Flexbox layout, tested across all screen sizes
-- ⚡ **Real-time Search** — instant DOM-based article filtering on every keystroke
-- 🤖 **AI Summarization** — on-demand one-paragraph summaries powered by Google Gemini API
-- 📌 **Skeleton Loading States** — professional UX with loading placeholders before content arrives
-- 🔗 **Personalized Recommendations** *(coming soon)* — sentence-transformer embeddings + ChromaDB vector store
+- 🔍 **Live News Feed** — fetches real-time articles via NewsAPI REST endpoint  
+- 🎨 **Responsive UI** — mobile-first CSS Grid/Flexbox layout across all devices  
+- ⚡ **Real-time Search** — instant DOM-level filtering  
+- 🤖 **AI Summarization** — one-paragraph summaries via Google Gemini API  
+- 📌 **Skeleton Loading States** — smooth, professional UX  
+- 🔗 **Personalized Recommendations** *(coming soon)* — embeddings + ChromaDB vector store  
 
 ---
 
@@ -25,38 +25,37 @@
 
 | Layer | Technology |
 |-------|-----------|
-| Frontend | HTML5 (semantic), CSS3 (Flexbox, Grid, Media Queries), JavaScript ES6+ |
-| APIs | NewsAPI (live articles), Google Gemini API (AI summarization) |
-| DOM | Vanilla JS — createElement, appendChild, event listeners, Fetch API |
-| AI/ML | Gemini 1.5 Flash (prompt engineering), sentence-transformers, ChromaDB |
-| Dev Tools | Git (feature branching, PRs), VS Code |
+| Frontend | HTML5 (semantic), CSS3 (Grid, Flexbox, Media Queries), JavaScript ES6+ |
+| APIs | NewsAPI (REST), Google Gemini API |
+| DOM | Vanilla JS — createElement, appendChild, Fetch API |
+| AI/ML | Gemini 2.5 Flash, sentence-transformers, ChromaDB |
+| Dev Tools | Git (feature branching, PR flow), VS Code |
 
 ---
 
 ## 📁 Project Structure
-
-```
 NewsLens-AI-News-Aggregator---Personalized-Digest-App/
-├── index.html              # Semantic HTML5 structure
-├── style.css               # Responsive CSS3 — mobile-first
-├── app.js                  # Core JS — DOM manipulation, Fetch API, OOP classes
-├── recommendations.py      # Python microservice — embeddings + ChromaDB
-├── requirements.txt        # Python dependencies
-├── .env.example            # API key template (never commit real keys)
-├── .gitignore              # Ignores .env and cache files
-├── LICENSE                 # MIT License
-└── README.md               # You are here
-```
+├── index.html # Semantic HTML5 structure
+├── style.css # Responsive CSS3 — mobile-first
+├── app.js # DOM manipulation, API fetches, OOP classes
+├── server.py # Flask backend proxy — secures API keys
+├── recommendations.py # Embeddings + ChromaDB microservice
+├── requirements.txt # Python dependencies
+├── .env.example # Template for API keys
+├── .gitignore # Ignore rules
+├── LICENSE # MIT License
+└── README.md # Documentation
+
 
 ---
 
 ## ⚙️ Setup & Running Locally
 
 ### Prerequisites
-- A modern browser (Chrome / Firefox / Edge)
-- [NewsAPI key](https://newsapi.org/register) — free tier, no credit card
-- [Google Gemini API key](https://aistudio.google.com/app/apikey) — free tier, just a Google account
-- Python 3.10+ *(only for recommendations microservice)*
+- Modern browser (Chrome / Firefox / Edge)
+- [NewsAPI key](https://newsapi.org/register)
+- [Google Gemini API key](https://aistudio.google.com/app/apikey)
+- Python 3.10+ *(for backend + recommendations)*
 
 ### 1. Clone the repo
 ```bash
@@ -64,26 +63,24 @@ git clone git@github.com:Hemanthkumar04/NewsLens-AI-News-Aggregator---Personaliz
 cd NewsLens-AI-News-Aggregator---Personalized-Digest-App
 ```
 
-### 2. Set up API keys
+### 2. Get API Keys
 ```bash
 cp .env.example .env
-# Open .env in VS Code and fill in your keys
+# Fill in your keys in the .env file
 ```
 
-### 3. Open the app
+### 3. Install Dependencies
 ```bash
-# Open index.html directly in your browser
-xdg-open index.html
-# OR right-click index.html in VS Code → Open with Live Server
-```
-
-### 4. (Optional) Run recommendations microservice
-```bash
+python3 -m venv venv
+source venv/bin/activate        # Windows: venv\Scripts\activate
 pip install -r requirements.txt
-python recommendations.py
 ```
 
----
+### 4. Run the application
+```bash
+python server.py
+Then open: http://127.0.0.1:5000
+```
 
 ## 🧠 How It Works
 
@@ -99,20 +96,39 @@ python recommendations.py
 4. Response text is rendered into a modal via DOM manipulation
 
 ### Architecture (OOP — ES6 Classes)
-```
-APIClient          → handles all external API calls (NewsAPI + Gemini)
-ArticleRenderer    → handles all DOM rendering logic
-SearchController   → manages search state and real-time filtering
-NewsApp            → orchestrates all components (composition over inheritance)
-```
+                       ┌────────────────────────────────┐
+                       │           Frontend (UI)        │
+                       │  HTML • CSS • JS (ES6 Classes) │
+                       │  - ArticleRenderer             │
+                       │  - SearchController            │
+                       │  - APIClient                   │
+                       └───────────────┬────────────────┘
+                                       │  Fetch (JSON)
+                                       ▼
+                           ┌───────────┴───────────┐
+                           │      Flask Backend    │
+                           │       server.py       │
+                           │  - Loads .env keys    │
+                           │  - Proxies NewsAPI    │
+                           │  - Proxies Gemini API │
+                           └───────────┬───────────┘
+                                       │ Secure API calls
+                                       ▼
+     ┌──────────────────────────────┐             ┌──────────────────────────────┐
+     │           NewsAPI            │             │          Gemini API          │
+     │  Live article JSON feed      │             │ AI text generation endpoint  │
+     └──────────────────────────────┘             └──────────────────────────────┘
 
----
+
+                 ┌─────────────────────────────────────────────────────┐
+                 │        recommendations.py (future module)           │
+                 │  sentence-transformers + ChromaDB vector store      │
+                 │  Personalized user-topic embeddings                 │
+                 └─────────────────────────────────────────────────────┘
 
 ## 📸 Screenshots
-
-> *Screenshots will be added after UI is complete*
-
----
+### Home Page
+![Home Page](./screenshots/ui-home.png)
 
 ## 🗂️ Git Workflow
 
@@ -127,7 +143,6 @@ main
 ```
 
 ---
-
 ## 📄 License
 
 This project is licensed under the MIT License — see [LICENSE](LICENSE) for details.
@@ -139,4 +154,4 @@ This project is licensed under the MIT License — see [LICENSE](LICENSE) for de
 **Hemanth Kumar Yanda**
 - GitHub: [@Hemanthkumar04](https://github.com/Hemanthkumar04)
 - LinkedIn: [y-hemanth-kumar](https://linkedin.com/in/y-hemanth-kumar)
-- Email: hemanthkumar.yanda@gmail.com
+- Email: hky21.github@gmail.com
